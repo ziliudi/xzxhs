@@ -1,0 +1,9 @@
+{
+  "name": "xzxhs",
+  "version": "1.0.0",
+  "description": "Xiaohongshu image parser",
+  "scripts": {
+    "dev": "wrangler pages dev .",
+    "deploy": "wrangler pages deploy ."
+  }
+}
