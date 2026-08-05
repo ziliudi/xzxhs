@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+
+<title>小红书图片解析</title>
+
+<style>
+
+body{
+    font-family:Arial,"Microsoft Yahei";
+    background:#f5f5f5;
+    padding:20px;
+}
+
+.box{
+    max-width:600px;
+    margin:auto;
+    background:white;
+    padding:20px;
+    border-radius:12px;
+}
+
+h2{
+    text-align:center;
+}
+
+input{
+    width:100%;
+    box-sizing:border-box;
+    padding:12px;
+    font-size:16px;
+    border:1px solid #ddd;
+    border-radius:8px;
+}
+
+button{
+
+    width:100%;
+    margin-top:15px;
+    padding:12px;
+    background:#ff2442;
+    color:white;
+    border:0;
+    border-radius:8px;
+    font-size:16px;
+
+}
+
+
+.item{
+
+    margin-top:15px;
+    padding:10px;
+    background:#fafafa;
+    border-radius:8px;
+    word-break:break-all;
+
+}
+
+
+img{
+
+    width:100%;
+    margin-top:10px;
+    border-radius:8px;
+
+}
+
+
+a{
+
+    color:#1677ff;
+
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<div class="box">
+
+<h2>
+小红书图片解析
+</h2>
+
+
+<input
+id="url"
+placeholder="粘贴小红书分享链接">
+
+
+<button onclick="parse()">
+解析图片
+</button>
+
+
+<div id="result"></div>
+
+
+</div>
+
+
+
+<script>
+
+
+async function parse(){
+
+
+let url =
+document.getElementById("url").value.trim();
+
+
+if(!url){
+
+alert("请输入分享链接");
+
+return;
+
+}
+
+
+
+let result =
+document.getElementById("result");
+
+
+result.innerHTML="正在解析...";
+
+
+
+try{
+
+
+let api =
+"/api/parse?url="
++
+encodeURIComponent(url);
+
+
+
+let res =
+await fetch(api);
+
+
+
+let data =
+await res.json();
+
+
+
+if(!data.success){
+
+
+result.innerHTML =
+"<p>失败："+(data.error||"未知错误")+"</p>";
+
+return;
+
+}
+
+
+
+let html =
+"<h3>找到 "
++
+data.count
++
+" 张图片</h3>";
+
+
+
+data.images.forEach((img,index)=>{
+
+
+html += `
+
+<div class="item">
+
+第 ${index+1} 张<br>
+
+<a href="${img}" target="_blank">
+打开原图
+</a>
+
+<img src="${img}">
+
+</div>
+
+`;
+
+
+
+});
+
+
+
+result.innerHTML=html;
+
+
+
+}catch(e){
+
+
+result.innerHTML=
+"错误："+e.message;
+
+
+}
+
+
+
+}
+
+
+</script>
+
+
+</body>
+
+</html>
