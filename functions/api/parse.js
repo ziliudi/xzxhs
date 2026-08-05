@@ -92,6 +92,16 @@ export async function onRequest(context) {
 
     const html =
     await page.text();
+    
+    return Response.json({
+
+  length: html.length,
+
+  hasState: html.includes("window.__INITIAL_STATE__"),
+
+  sample: html.substring(0,500)
+
+});
 
 
 
